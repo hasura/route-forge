@@ -1,8 +1,7 @@
-import {Config} from "./fdx/fdxapi.rest.config";
 import {SpanStatusCode, trace} from "@opentelemetry/api";
 import {Request, Response} from 'express';
 import {StatusCodes,} from 'http-status-codes';
-import {RawRequest, RestifiedEndpoint} from "./types";
+import {IConfig, RawRequest, RestifiedEndpoint} from "./types";
 
 const queryString = require('qs');
 
@@ -23,7 +22,7 @@ function parseQuery(query: string): Record<string, unknown> {
 
 const tracer = trace.getTracer("restified-endpoints-plugin");
 
-export const restifiedHandler = (request: Request, response: Response, graphqlServerUrl: string) => {
+export const restifiedHandler = (Config: IConfig, request: Request, response: Response, graphqlServerUrl: string) => {
     return tracer.startActiveSpan("Handle request", async (span) => {
         // Authentication
         if (
@@ -61,6 +60,7 @@ export const restifiedHandler = (request: Request, response: Response, graphqlSe
                 try {
                     endpoint.transformers?.in?.({query, variables, request, graphqlServerUrl})
                     const result = await executeGraphQL(
+                        Config,
                         query || '',
                         variables,
                         request,
@@ -124,6 +124,7 @@ function extractVariables(request: RawRequest, endpoint: RestifiedEndpoint) {
 }
 
 async function executeGraphQL(
+    Config: IConfig,
     query: String,
     variables: Record<string, unknown>,
     request: Request,

@@ -1,6 +1,5 @@
 import {Request} from "express";
 import {ExecutionResult} from "graphql/execution";
-import {FdxResponse} from "../fdx/fdx.api.core.types";
 import {DomainTransformer, RecordTransformers} from "./transformers";
 
 
@@ -23,7 +22,7 @@ export interface RestifiedEndpoint {
     };
 }
 
-export type TransformGraphQLResponseOut = (params: Record<string, any>, response: ExecutionResult) => FdxResponse;
+export type TransformGraphQLResponseOut = (params: Record<string, any>, response: ExecutionResult) => Record<string, unknown>;
 export type TransformGraphQLResponseIn = (endpoint: {
     query?: string,
     variables: Record<string, unknown>,

@@ -97,7 +97,7 @@ export async function startServer(config: IConfig) {
 
     app.use(prePath, async (req: Request, res: Response, next: NextFunction) => {
         assert(process.env.GRAPHQL_SERVER_URL);
-        return restifiedHandler(req, res, process.env.GRAPHQL_SERVER_URL);
+        return restifiedHandler(config, req, res, process.env.GRAPHQL_SERVER_URL);
     });
 
 

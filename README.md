@@ -2,25 +2,25 @@
 
 ## Overview
 
-This plugin for Hasura DDN (Distributed Data Network) allows you to add RESTified GraphQL endpoints to the DDN supergraph. It transforms GraphQL queries into REST-like endpoints, making it easier to integrate with systems that prefer REST APIs.
+This library plugin for Hasura DDN (Distributed Data Network) makes it a breeze to add RESTified GraphQL endpoints to the DDN supergraph. It transforms GraphQL queries into REST-like endpoints, making it easier to integrate with systems that prefer REST APIs.
 
 ## Features
 
-- Transform GraphQL queries into REST-like endpoints
-- Configurable endpoint mapping
-- Authentication support
+- Transform GraphQL queries into REST-like endpoints using a structure transformation engine that generates data lineage and provenance documentation.
+- Configurable endpoint mapping - the transformation engine lets you create any output shape from any input shape
 - Variable extraction from URL parameters, query strings, and request body
 - OpenTelemetry integration for tracing
+- Supports swagger docs and can host the swagger doc, and optionally validate input and outputs.
 
 ## How it works
 
-1. The plugin starts a server that listens for incoming requests.
+1. Just run startServer(IConfig), passing a structure representation of the inputs and output.
 2. When a request is received, it checks if it matches any configured RESTified endpoints.
 3. If a match is found, the plugin:
    - Extracts variables from the request (URL parameters, query string, body)
    - Executes the corresponding GraphQL query with the extracted variables
-   - Returns the GraphQL response as a REST-style JSON response
-
+   - Transforms the response into the desired shape returns it. 
+   
 ## Configuration
 
 Configure the plugin in `src/fdxapi.rest.config.ts`:
@@ -65,7 +65,26 @@ Configure the graphql server URL in `.dev.vars`:
 
 ```toml
 [vars]
-GRAPHQL_SERVER_URL = "<GRAPHQL_SERVER_URL>"
+OTEL_EXPORTER_OTLP_ENDPOINT = "<ex, http://localhost:4318/v1/traces>"
+OTEL_EXPORTER_PAT = "<ex, foobar>"
+GRAPHQL_SERVER_URL = "<ex, http://localhost:3280/graphql>"
+M_AUTH_KEY = "<ex, secret>"
+LOCAL_SERVER = "http://localhost:3000"
+SERVICE_DESCRIPTION = "Financial Data Exchange Example API"
+BASE_PATH = /v1/api/rest
+# DB Configuration
+DB_TYPE=postgres       # "postgres" | "mysql" | "mongodb" etc.
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASS=password
+DB_NAME=postgres
+DB_SYNC=true          # true only in dev environment
+DB_LOGGING=true       # true to enable logging
+DB_SCHEMA=data_quality
+VALIDATE_REQUESTS=true
+VALIDATE_RESPONSES=false
+API_SPEC_PATH=./specs/fdx/fdxapi.core.yaml
 ```
 
 ## Development
