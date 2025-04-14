@@ -1,0 +1,132 @@
+---
+kind: LifecyclePluginHook
+version: v1
+definition:
+  pre: route
+  name: css
+  url:
+    valueFromEnv: FDX_URL
+  config:
+    matchPath: "/v1/api/rest/css"
+    matchMethods: ["GET"]
+    request:
+      method: GET
+      headers:
+        forward:
+          - Authorization
+          - x-hasura-role
+          - x-hasura-ddn-token
+          - x-hasura-user-id
+        additional:
+          hasura-m-auth:
+            valueFromEnv: M_AUTH_KEY
+      rawRequest:
+        path: {}
+        query: {}
+        method: {}
+        body: {}
+    response:
+      headers:
+        additional:
+          content-type:
+            value: text/css
+---
+kind: LifecyclePluginHook
+version: v1
+definition:
+  pre: route
+  name: fdx_docs
+  url:
+    valueFromEnv: FDX_URL
+  config:
+    matchPath: "/v1/api/rest/docs"
+    matchMethods: ["GET"]
+    request:
+      method: GET
+      headers:
+        forward:
+          - Authorization
+          - x-hasura-role
+          - x-hasura-ddn-token
+          - x-hasura-user-id
+        additional:
+          hasura-m-auth:
+            valueFromEnv: M_AUTH_KEY
+      rawRequest:
+        path: {}
+        query: {}
+        method: {}
+        body: {}
+    response:
+      headers:
+        additional:
+          content-type:
+            value: text/html
+---
+kind: LifecyclePluginHook
+version: v1
+definition:
+  pre: route
+  name: fdx_get
+  url:
+    valueFromEnv: FDX_URL
+  config:
+    matchPath: "/v1/api/rest/*"
+    matchMethods: ["GET"]
+    request:
+      method: GET
+      headers:
+        forward:
+          - Authorization
+          - x-hasura-role
+          - x-hasura-ddn-token
+          - x-hasura-user-id
+          - x-fapi-interaction-id
+          - fdx-api-actor-type
+        additional:
+          hasura-m-auth:
+            valueFromEnv: M_AUTH_KEY
+      rawRequest:
+        path: {}
+        query: {}
+        method: {}
+        body: {}
+    response:
+      headers:
+        additional:
+          content-type:
+            value: application/octet-stream
+---
+kind: LifecyclePluginHook
+version: v1
+definition:
+  pre: route
+  name: fdx_post
+  url:
+    valueFromEnv: FDX_URL
+  config:
+    matchPath: "/v1/api/rest/*"
+    matchMethods: ["POST"]
+    request:
+      method: POST
+      headers:
+        forward:
+          - Authorization
+          - x-hasura-role
+          - x-hasura-ddn-token
+          - x-hasura-user-id
+          - x-fapi-interaction-id
+          - fdx-api-actor-type
+        additional:
+          hasura-m-auth:
+            valueFromEnv: M_AUTH_KEY
+      rawRequest:
+        path: {}
+        query: {}
+        method: {}
+        body: {}
+    response:
+      headers:
+        additional:
+          content-type:
+            value: application/json

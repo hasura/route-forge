@@ -1,0 +1,14 @@
+kind: Subgraph
+version: v2
+definition:
+  name: globals
+  generator:
+    rootPath: .
+  includePaths:
+    - metadata
+  envMapping:
+    FDX_URL:
+      fromEnv: FDX_URL
+    M_AUTH_KEY:
+      fromEnv: M_AUTH_KEY
+
