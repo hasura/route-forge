@@ -83,7 +83,7 @@ export interface RawRequest {
  * @property {Object} graphqlServer.headers - Additional headers for the GraphQL server.
  * @property {Object} graphqlServer.headers.additional - Additional headers for the GraphQL server.
  * @property {string[]} graphqlServer.headers.forward - List of headers to forward.
- * @property {Object} headers - Additional headers for the server.
+ * @property {Object} service_authorization_headers - Additional headers for the server.
  * @property {(headers: any) => RestifiedEndpoint[]} restifiedEndpoints - Function to return restified endpoints based on headers.
  */
 export interface IConfig {
@@ -95,6 +95,6 @@ export interface IConfig {
             forward?: string[];
         }
     };
-    headers?: Record<string, string>;
+    service_authorization_headers?: Record<string, string>;
     restifiedEndpoints: (headers: any) => RestifiedEndpoint[]
 }

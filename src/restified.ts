@@ -26,7 +26,7 @@ export const restifiedHandler = (Config: IConfig, request: Request, response: Re
     return tracer.startActiveSpan("Handle request", async (span) => {
         // Authentication
         if (
-            request.headers?.["hasura-m-auth"] !== Config.headers?.["hasura-m-auth"]
+            request.headers?.["hasura-m-auth"] !== Config.service_authorization_headers?.["hasura-m-auth"]
         ) {
             span.setStatus({
                 code: SpanStatusCode.ERROR,
