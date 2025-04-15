@@ -13,6 +13,10 @@ import {ApiLineageEntity, FieldLineageEntity, RecordLineageEntity} from './entit
 export function lineageRouterFactory(config: IConfig): Router {
     const router = Router();
 
+    router.use((request, _response, next) => {
+        next();
+    });
+
     router.post(`/generate`, async (_req: Request, res: Response) => {
         const apiLineageRepo = AppDataSource.getRepository(ApiLineageEntity);
         const now = new Date();
@@ -88,7 +92,7 @@ export function lineageRouterFactory(config: IConfig): Router {
         const lineage = await AppDataSource.getRepository(ApiLineageEntity).find({
             relations: ['records', 'records.fields'],
         });
-        res.json({succeeded: true, lineage});
+        res.status(200).json(lineage);
     });
 
     return router;

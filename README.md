@@ -23,10 +23,10 @@ This library plugin for Hasura DDN (Distributed Data Network) makes it a breeze 
    
 ## Configuration
 
-Configure the plugin in `src/fdxapi.rest.config.ts`:
+Configure the plugin in `example/rest.config.ts` or your choice:
 
-- `graphqlServer`: GraphQL server settings (headers)
-- `headers`: Authentication headers
+- `graphqlServer`: GraphQL server settings (headers & forwarded headers)
+- `service_authorization_headers`: Authentication service_authorization_headers
 - `restifiedEndpoints`: Array of RESTified endpoint configurations
 
 Example configuration:
@@ -34,14 +34,14 @@ Example configuration:
 ```typescript
 export const Config = {
   graphqlServer: {
-    headers: {
+     headers: {
       additional: {
         "Content-Type": "application/json",
       },
       forward: ["X-Hasura-Role"],
     },
   },
-  headers: {
+  service_authorization_headers: {
     "hasura-m-auth": "zZkhKqFjqXR4g5MZCsJUZCcoPyZ",
   },
   restifiedEndpoints: [
@@ -61,6 +61,253 @@ export const Config = {
 };
 ```
 
+You can get manage lineage with these endpoints:
+- Generate Lineage - `/v1/api/rest/lineage/generate`
+- Get Lineage - `/v1/api/rest/lineage/get`
+
+lineage get will return a lineage data structure like this:
+
+```json
+[
+  {
+    "apiLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET",
+    "serverName": "XYZ_BANK_FDX_API_Server",
+    "apiCall": "/v1/api/rest/accounts",
+    "description": "Lineage for /v1/api/rest/accounts",
+    "startDate": "2025-04-15T21:54:39.759Z",
+    "endDate": null,
+    "updatedAt": null,
+    "records": [
+      {
+        "recordLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account",
+        "inputType": "Primarily from consumer_banking.accounts.",
+        "outputType": "FDX (Account | DepositAccount) type.",
+        "description": "Map my bank deposit account to FDX API account",
+        "inputDescription": null,
+        "outputDescription": null,
+        "pkNames": "consumerBankingAccountId",
+        "fields": [
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_status",
+            "fieldName": "status",
+            "description": "Converts the input from an Open Banking Status to an FDX status.\n- for OB Status 'ACTIVE' return FDX Status 'OPEN'\n- for OB Status 'PENDING' return FDX Status 'PENDINGOPEN'\n- for OB Status 'INACTIVE','DORMANT','SUSPENDED','FROZEN' return FDX Status 'RESTRICTED'\n- for OB Status 'CLOSED','ARCHIVED' return FDX Status 'CLOSED'\n",
+            "inputFields": "status"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_accountCategory",
+            "fieldName": "accountCategory",
+            "description": "Convert a product type to an FDX account category based on the following mapping rules:\n- For product types 'CHECKING', 'SAVINGS', 'STUDENT', 'YOUTH', 'SENIOR', 'PREMIUM', 'FOREIGN_CURRENCY', and 'SPECIALIZED', the returned account category is 'DEPOSIT_ACCOUNT'.\n- For product types 'MONEY_MARKET', 'CERTIFICATE_OF_DEPOSIT', and 'IRA', the returned account category is 'INVESTMENT_ACCOUNT'.\n- For the 'HSA' product type, the returned account category is 'INSURANCE_ACCOUNT'.\n- For product types 'BUSINESS_CHECKING' and 'BUSINESS_SAVINGS', the returned account category is 'COMMERCIAL_ACCOUNT'.\n- If the provided product type doesn't match any of the predefined types, an Error is thrown indicating 'Unknown ProductType'.\"\n",
+            "inputFields": "consumerBankingProduct.productType"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_accountId",
+            "fieldName": "accountId",
+            "description": "Convert a value from a number to a string",
+            "inputFields": "consumerBankingAccountId"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_accountNumber",
+            "fieldName": "accountNumber",
+            "description": "Maps straight-through.",
+            "inputFields": "accountNumber"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_balanceAsOf",
+            "fieldName": "balanceAsOf",
+            "description": "Computed value of current UTC date and time.",
+            "inputFields": "balanceAsOf"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_currentBalance",
+            "fieldName": "currentBalance",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros",
+            "inputFields": "currentBalance"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_availableBalance",
+            "fieldName": "availableBalance",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros",
+            "inputFields": "availableBalance"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_openingDayBalance",
+            "fieldName": "openingDayBalance",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros",
+            "inputFields": "openingDayBalance"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_annualPercentageYield",
+            "fieldName": "annualPercentageYield",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros.",
+            "inputFields": "annualPercentageYield"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_interestYtd",
+            "fieldName": "interestYtd",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros.",
+            "inputFields": "interestYtd"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_term",
+            "fieldName": "term",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros. Rounded to 1 decimals.",
+            "inputFields": "term"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_nickname",
+            "fieldName": "nickname",
+            "description": "Maps straight-through.",
+            "inputFields": "nickname"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_displayName",
+            "fieldName": "displayName",
+            "description": "Maps straight-through.",
+            "inputFields": "displayName"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_maturityDate",
+            "fieldName": "maturityDate",
+            "description": "Converts the input from an any RFC date-like string to an RFC date string.",
+            "inputFields": "maturityDate"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_currency.currencyCode",
+            "fieldName": "currency.currencyCode",
+            "description": "Maps straight-through.",
+            "inputFields": "currency.code"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts_GET_account_productName",
+            "fieldName": "productName",
+            "description": "Maps straight-through.",
+            "inputFields": "consumerBankingProduct.productName"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "apiLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET",
+    "serverName": "XYZ_BANK_FDX_API_Server",
+    "apiCall": "/v1/api/rest/accounts/:accountId",
+    "description": "Lineage for /v1/api/rest/accounts/:accountId",
+    "startDate": "2025-04-15T21:54:39.759Z",
+    "endDate": null,
+    "updatedAt": null,
+    "records": [
+      {
+        "recordLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account",
+        "inputType": "Primarily from consumer_banking.accounts.",
+        "outputType": "FDX (Account | DepositAccount) type.",
+        "description": "Map my bank deposit account to FDX API account",
+        "inputDescription": null,
+        "outputDescription": null,
+        "pkNames": "consumerBankingAccountId",
+        "fields": [
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_status",
+            "fieldName": "status",
+            "description": "Converts the input from an Open Banking Status to an FDX status.\n- for OB Status 'ACTIVE' return FDX Status 'OPEN'\n- for OB Status 'PENDING' return FDX Status 'PENDINGOPEN'\n- for OB Status 'INACTIVE','DORMANT','SUSPENDED','FROZEN' return FDX Status 'RESTRICTED'\n- for OB Status 'CLOSED','ARCHIVED' return FDX Status 'CLOSED'\n",
+            "inputFields": "status"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_accountCategory",
+            "fieldName": "accountCategory",
+            "description": "Convert a product type to an FDX account category based on the following mapping rules:\n- For product types 'CHECKING', 'SAVINGS', 'STUDENT', 'YOUTH', 'SENIOR', 'PREMIUM', 'FOREIGN_CURRENCY', and 'SPECIALIZED', the returned account category is 'DEPOSIT_ACCOUNT'.\n- For product types 'MONEY_MARKET', 'CERTIFICATE_OF_DEPOSIT', and 'IRA', the returned account category is 'INVESTMENT_ACCOUNT'.\n- For the 'HSA' product type, the returned account category is 'INSURANCE_ACCOUNT'.\n- For product types 'BUSINESS_CHECKING' and 'BUSINESS_SAVINGS', the returned account category is 'COMMERCIAL_ACCOUNT'.\n- If the provided product type doesn't match any of the predefined types, an Error is thrown indicating 'Unknown ProductType'.\"\n",
+            "inputFields": "consumerBankingProduct.productType"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_accountId",
+            "fieldName": "accountId",
+            "description": "Convert a value from a number to a string",
+            "inputFields": "consumerBankingAccountId"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_accountNumber",
+            "fieldName": "accountNumber",
+            "description": "Maps straight-through.",
+            "inputFields": "accountNumber"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_balanceAsOf",
+            "fieldName": "balanceAsOf",
+            "description": "Computed value of current UTC date and time.",
+            "inputFields": "balanceAsOf"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_currentBalance",
+            "fieldName": "currentBalance",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros",
+            "inputFields": "currentBalance"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_availableBalance",
+            "fieldName": "availableBalance",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros",
+            "inputFields": "availableBalance"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_openingDayBalance",
+            "fieldName": "openingDayBalance",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros",
+            "inputFields": "openingDayBalance"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_annualPercentageYield",
+            "fieldName": "annualPercentageYield",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros.",
+            "inputFields": "annualPercentageYield"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_interestYtd",
+            "fieldName": "interestYtd",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros.",
+            "inputFields": "interestYtd"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_term",
+            "fieldName": "term",
+            "description": "Converts the input from a string to a number converting non-numerics to zeros. Rounded to 1 decimals.",
+            "inputFields": "term"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_nickname",
+            "fieldName": "nickname",
+            "description": "Maps straight-through.",
+            "inputFields": "nickname"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_displayName",
+            "fieldName": "displayName",
+            "description": "Maps straight-through.",
+            "inputFields": "displayName"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_maturityDate",
+            "fieldName": "maturityDate",
+            "description": "Converts the input from an any RFC date-like string to an RFC date string.",
+            "inputFields": "maturityDate"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_currency.currencyCode",
+            "fieldName": "currency.currencyCode",
+            "description": "Maps straight-through.",
+            "inputFields": "currency.code"
+          },
+          {
+            "fieldLineageId": "XYZ_BANK_FDX_API_Server_/v1/api/rest/accounts/:accountId_GET_account_productName",
+            "fieldName": "productName",
+            "description": "Maps straight-through.",
+            "inputFields": "consumerBankingProduct.productName"
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
 Configure the graphql server URL in `.dev.vars`:
 
 ```toml
@@ -73,19 +320,24 @@ LOCAL_SERVER = "http://localhost:3000"
 SERVICE_DESCRIPTION = "Financial Data Exchange Example API"
 BASE_PATH = /v1/api/rest
 # DB Configuration
-DB_TYPE=postgres       # "postgres" | "mysql" | "mongodb" etc.
+DB_TYPE=postgres                            # "postgres" | "mysql" | "mongodb" etc.
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASS=password
 DB_NAME=postgres
-DB_SYNC=true          # true only in dev environment
-DB_LOGGING=true       # true to enable logging
-DB_SCHEMA=data_quality
-VALIDATE_REQUESTS=true
-VALIDATE_RESPONSES=false
-API_SPEC_PATH=./specs/fdx/fdxapi.core.yaml
+DB_SYNC=true                               # true only in dev environment
+DB_LOGGING=true                            # true to enable logging
+DB_SCHEMA=data_quality                     # make sure this exists in the DB first
+API_SPEC_PATH=./specs/fdx/fdxapi.core.yaml # optional swagger spec
+VALIDATE_REQUESTS=true                     # validate incoming requests against swagger spec
+VALIDATE_RESPONSES=false                   # validate outbound responses against swagger spec
 ```
+
+If `API_SPEC_PATH` points to a valid OpenAPI spec, you can also get the swagger assets at:
+
+- UI - `/v1/api/rest/docs`
+- Doc - `/v1/api/rest/swagger.json`
 
 ## Development
 
@@ -104,8 +356,8 @@ To run the plugin locally, you can use the following steps:
 2. Clone this repository:
 
    ```sh
-   git clone https://github.com/your-org/engine-plugin-restified-endpoint.git
-   cd engine-plugin-restified-endpoint
+   git clone https://github.com/hasura/route-forge
+   cd route-forge
    ```
 
 3. Install dependencies:
@@ -117,7 +369,7 @@ To run the plugin locally, you can use the following steps:
 4. Start the local development server:
 
    ```sh
-   npm start
+   npm dev
    ```
 
 The above command will start a local server that listens for incoming requests. The server runs on port 8787 by default. The URL of the local server will be displayed in the terminal.
@@ -160,7 +412,7 @@ definition:
       matchMethods: ["GET"]
       request:
          method: GET
-         headers:
+         service_authorization_headers:
             forward:
                - Authorization
                - x-hasura-role
@@ -175,7 +427,7 @@ definition:
             method: {}
             body: {}
       response:
-         headers:
+         service_authorization_headers:
             additional:
                content-type:
                   value: text/css
@@ -192,7 +444,7 @@ definition:
       matchMethods: ["GET"]
       request:
          method: GET
-         headers:
+         service_authorization_headers:
             forward:
                - Authorization
                - x-hasura-role
@@ -207,7 +459,7 @@ definition:
             method: {}
             body: {}
       response:
-         headers:
+         service_authorization_headers:
             additional:
                content-type:
                   value: text/html
@@ -224,7 +476,7 @@ definition:
       matchMethods: ["GET"]
       request:
          method: GET
-         headers:
+         service_authorization_headers:
             forward:
                - Authorization
                - x-hasura-role
@@ -241,7 +493,7 @@ definition:
             method: {}
             body: {}
       response:
-         headers:
+         service_authorization_headers:
             additional:
                content-type:
                   value: application/octet-stream
@@ -258,7 +510,7 @@ definition:
       matchMethods: ["POST"]
       request:
          method: POST
-         headers:
+         service_authorization_headers:
             forward:
                - Authorization
                - x-hasura-role
@@ -275,7 +527,7 @@ definition:
             method: {}
             body: {}
       response:
-         headers:
+         service_authorization_headers:
             additional:
                content-type:
                   value: application/json
@@ -331,8 +583,6 @@ After adding new endpoints, redeploy the plugin for the changes to take effect.
 ## Limitations and Future Improvements
 
 - Currently the plugin supports basic variable extraction. More complex scenarios might require additional implementation.
-- OpenAPI Spec documentation generation is not yet implemented.
-- Rate limiting is not currently supported within the plugin.
 
 ## Contributing
 

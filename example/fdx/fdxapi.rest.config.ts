@@ -21,7 +21,7 @@ export const Config: IConfig = {
             forward: ["X-Hasura-Role", "Authorization", "X-Hasura-ddn-token", "X-Hasura-User-Id"],
         },
     },
-    headers: {
+    service_authorization_headers: {
         "hasura-m-auth": process.env.M_AUTH_KEY || '',
     },
     restifiedEndpoints: (headers: http.IncomingHttpHeaders) => [
