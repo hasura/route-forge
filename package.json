@@ -45,6 +45,15 @@
     "semantic-release": "^22.0.12",
     "typescript": "^5.7.3"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hasura/route-forge.git"
+  },
   "release": {
     "branches": [
       "main"
