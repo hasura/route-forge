@@ -3,6 +3,13 @@ import {AppDataSource} from './logging';
 import {IConfig} from './types';
 import {ApiLineageEntity, FieldLineageEntity, RecordLineageEntity} from './entities';
 
+/**
+ * Generate lineage information based on provided configuration.
+ *
+ * @param {IConfig} config - The configuration object containing necessary settings and data.
+ *
+ * @return {Router} Returns an Express Router instance for handling lineage-related routes.
+ */
 export function lineageRouterFactory(config: IConfig): Router {
     const router = Router();
 

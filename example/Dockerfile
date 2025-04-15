@@ -14,7 +14,7 @@ RUN npm install
 COPY .. .
 
 # Build the TypeScript application
-RUN npm run build_c
+RUN npm run build
 
 # Set the command that will be run when the Docker container starts
 CMD [ "npm", "start" ]
