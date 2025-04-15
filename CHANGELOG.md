@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/hasura/route-forge/compare/v1.0.3...v1.1.0) (2025-04-15)
+
+
+### Features
+
+* Improved docs and made swagger doc optional ([beb70f0](https://github.com/hasura/route-forge/commit/beb70f066d65e4b3de6ea91daf59ee881660e80a))
+
 ## [1.0.3](https://github.com/hasura/route-forge/compare/v1.0.2...v1.0.3) (2025-04-15)
 
 
