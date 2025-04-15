@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node -r dotenv/config ./dist/example/index.js dotenv_config_path=./example/.dev.vars",
     "build": "tsc",
-    "test": "echo \"No tests specified - skipping tests\" && true"
+    "test": "echo \"No tests specified, skipping tests\" && true"
   },
   "main": "./dist/src/index.js",
   "keywords": [
