@@ -1,6 +1,6 @@
 {
   "name": "hasura-route-forge",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": false,
   "scripts": {
     "dev": "node -r dotenv/config ./dist/example/index.js dotenv_config_path=./example/.dev.vars",
@@ -8,7 +8,14 @@
     "test": "echo \"No tests specified - skipping tests\" && true"
   },
   "main": "./dist/src/index.js",
-  "keywords": ["hasura","ddn","openapi","transform","data lineage","data provenance"],
+  "keywords": [
+    "hasura",
+    "ddn",
+    "openapi",
+    "transform",
+    "data lineage",
+    "data provenance"
+  ],
   "author": "",
   "license": "ISC",
   "description": "",
@@ -29,14 +36,19 @@
     "typeorm": "^0.3.22"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@types/express": "^5.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/lodash": "^4.17.15",
     "@types/swagger-ui-express": "^4.1.8",
+    "semantic-release": "^22.0.12",
     "typescript": "^5.7.3"
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
