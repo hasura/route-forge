@@ -34,5 +34,20 @@
     "@types/lodash": "^4.17.15",
     "@types/swagger-ui-express": "^4.1.8",
     "typescript": "^5.7.3"
+  },
+  "release": {
+    "branches": ["main"],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
+        }
+      ]
+    ]
   }
 }
