@@ -330,7 +330,7 @@ After adding new endpoints, redeploy the plugin for the changes to take effect.
 
 ## Limitations and Future Improvements
 
-- Currently, the plugin supports basic variable extraction. More complex scenarios might require additional implementation.
+- Currently the plugin supports basic variable extraction. More complex scenarios might require additional implementation.
 - OpenAPI Spec documentation generation is not yet implemented.
 - Rate limiting is not currently supported within the plugin.
 
