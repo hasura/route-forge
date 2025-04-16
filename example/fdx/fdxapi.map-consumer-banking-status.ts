@@ -1,9 +1,10 @@
 import {AccountStatus} from "./fdxapi.core.enums";
 import _ from "lodash";
 
-import {FieldTransform} from "../../src";
+import {FieldTransform, FieldTransformerFactory} from "../../src";
 
-export const mapConsumerBankingStatus = (input?: string): FieldTransform => {
+export function mapConsumerBankingStatus(options?: { input?: string }): FieldTransform {
+    const {input} = options ?? {}
     return {
         inputs: input ? [input] : undefined,
         transform: (inputFields: string[], inputDictionary: Record<string, any>): AccountStatus => {
@@ -37,3 +38,5 @@ export const mapConsumerBankingStatus = (input?: string): FieldTransform => {
 `
     }
 }
+
+export const mapConsumerBankingStatusFactory: FieldTransformerFactory = mapConsumerBankingStatus;

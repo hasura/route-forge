@@ -7,8 +7,8 @@ import swaggerUi from "swagger-ui-express";
 import _ from "lodash";
 import express, { Router } from 'express';
 import { IConfig } from "./types";
+import { LineageFieldSchema, LineageRecordSchema, LineageApiSchema, LineageResponseSchema } from "./types";
 import assert from "assert";
-import queryString from "querystring";
 
 export function swaggerFactory(config: IConfig, prePath: string): Router {
     const router = express.Router();
@@ -50,9 +50,38 @@ export function swaggerFactory(config: IConfig, prePath: string): Router {
             description: process.env.SERVICE_DESCRIPTION ?? ''
         }];
 
+        // Register schema components
+        if (!resolvedSpec.components) {
+            resolvedSpec.components = {};
+        }
+
+        if (!resolvedSpec.components.schemas) {
+            resolvedSpec.components.schemas = {};
+        }
+
+        // Add our schema components
+        resolvedSpec.components.schemas.LineageField = LineageFieldSchema;
+        resolvedSpec.components.schemas.LineageRecord = LineageRecordSchema;
+        resolvedSpec.components.schemas.LineageApi = LineageApiSchema;
+        resolvedSpec.components.schemas.LineageResponse = LineageResponseSchema;
+
+        // Add tags if they don't exist
+        if (!resolvedSpec.tags) {
+            resolvedSpec.tags = [];
+        }
+
+        // Add Data Governance tag if it doesn't exist
+        if (!resolvedSpec.tags.some((tag: {name: string}) => tag.name === 'Data Governance')) {
+            resolvedSpec.tags.push({
+                name: 'Data Governance',
+                description: 'API endpoints for data governance and lineage'
+            });
+        }
+
         // Dynamically add lineage endpoints to Swagger
         resolvedSpec.paths[`/lineage/generate`] = {
             post: {
+                tags: ['Data Governance'],
                 summary: "Generate lineage metadata",
                 responses: {"200": {description: "Successful generation of lineage metadata"}}
             }
@@ -60,8 +89,32 @@ export function swaggerFactory(config: IConfig, prePath: string): Router {
 
         resolvedSpec.paths[`/lineage/get`] = {
             get: {
+                tags: ['Data Governance'],
                 summary: "Retrieve lineage metadata",
-                responses: {"200": {description: "Successful retrieval of lineage metadata"}}
+                parameters: [
+                    {
+                        name: "generate",
+                        in: "query",
+                        description: "Generate option",
+                        required: false,
+                        schema: {
+                            type: "boolean",
+                            enum: [true],
+                        },
+                    },
+                ],
+                responses: {
+                    "200": {
+                        description: "Successful retrieval of lineage metadata",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    $ref: "#/components/schemas/LineageResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         };
 

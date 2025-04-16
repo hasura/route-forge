@@ -2,6 +2,7 @@ import {Request, Response, Router} from 'express';
 import {AppDataSource} from './logging';
 import {IConfig} from './types';
 import {ApiLineageEntity, FieldLineageEntity, RecordLineageEntity} from './entities';
+import {getFieldTransformer} from "./transforms";
 
 /**
  * Generate lineage information based on provided configuration.
@@ -13,49 +14,44 @@ import {ApiLineageEntity, FieldLineageEntity, RecordLineageEntity} from './entit
 export function lineageRouterFactory(config: IConfig): Router {
     const router = Router();
 
-    router.use((request, _response, next) => {
-        next();
-    });
+    async function generateLineage() {
 
-    router.post(`/generate`, async (_req: Request, res: Response) => {
         const apiLineageRepo = AppDataSource.getRepository(ApiLineageEntity);
         const now = new Date();
+        const domainTransformer = config.domainTransformer;
+        const serverName = config.serverName || 'defaultServer';
 
-        try {
-            const domainTransformer = config.domainTransformer;
-            const serverName = config.serverName || 'defaultServer';
+        for (const endpoint of config.restifiedEndpoints({})) {
+            if (!endpoint.outRecordTransformers || endpoint.outRecordTransformers.length === 0) continue;
 
-            for (const endpoint of config.restifiedEndpoints({})) {
-                if (!endpoint.outRecordTransformers || endpoint.outRecordTransformers.length === 0) continue;
+            const apiLineageId = `${serverName}_${endpoint.path}_${endpoint.methods.join('_')}`;
+            let apiLineage = await apiLineageRepo.findOne({
+                where: {apiLineageId},
+                relations: ['records', 'records.fields'],
+            });
 
-                const apiLineageId = `${serverName}_${endpoint.path}_${endpoint.methods.join('_')}`;
-                let apiLineage = await apiLineageRepo.findOne({
-                    where: {apiLineageId},
-                    relations: ['records', 'records.fields'],
+            if (!apiLineage) {
+                apiLineage = apiLineageRepo.create({
+                    apiLineageId,
+                    serverName,
+                    apiCall: endpoint.path,
+                    description: `Lineage for ${endpoint.path}`,
+                    startDate: now,
+                    records: [],
                 });
+            } else {
+                apiLineage.endDate = undefined;
+                apiLineage.updatedAt = now;
+                apiLineage.records = [];
+            }
 
-                if (!apiLineage) {
-                    apiLineage = apiLineageRepo.create({
-                        apiLineageId,
-                        serverName,
-                        apiCall: endpoint.path,
-                        description: `Lineage for ${endpoint.path}`,
-                        startDate: now,
-                        records: [],
-                    });
-                } else {
-                    apiLineage.endDate = undefined;
-                    apiLineage.updatedAt = now;
-                    apiLineage.records = [];
+            apiLineage.records = endpoint.outRecordTransformers.map(recordTransformerKey => {
+                const recordTransformer = domainTransformer.recordTransformers[recordTransformerKey];
+                if (!recordTransformer) {
+                    throw new Error(`Record transformer not found: ${recordTransformerKey}`);
                 }
 
-                apiLineage.records = endpoint.outRecordTransformers.map(recordTransformerKey => {
-                    const recordTransformer = domainTransformer.recordTransformers[recordTransformerKey];
-                    if (!recordTransformer) {
-                        throw new Error(`Record transformer not found: ${recordTransformerKey}`);
-                }
-
-                    const recordLineageId = `${apiLineageId}_${recordTransformerKey}`;
+                const recordLineageId = `${apiLineageId}_${recordTransformerKey}`;
                 const recordLineage = new RecordLineageEntity();
                 recordLineage.recordLineageId = recordLineageId;
                 recordLineage.inputType = recordTransformer.inputDescription;
@@ -68,27 +64,42 @@ export function lineageRouterFactory(config: IConfig): Router {
                     const fieldLineage = new FieldLineageEntity();
                     fieldLineage.fieldLineageId = `${recordLineageId}_${fieldKey}`;
                     fieldLineage.fieldName = fieldKey;
-                    fieldLineage.description = field.description;
-                    fieldLineage.inputFields = [field.inputs ?? fieldKey].join(',');
+                    const {description, inputs} = getFieldTransformer(field) || {};
+                    fieldLineage.description = description;
+                    fieldLineage.inputFields = [inputs ?? fieldKey].join(',');
                     fieldLineage.recordLineage = recordLineage;
                     return fieldLineage;
                 });
 
-                    return recordLineage;
-                });
+                return recordLineage;
+            });
 
-                await apiLineageRepo.save(apiLineage);
-            }
-
-            res.json({succeeded: true});
-
-        } catch (err) {
-            console.error("Lineage generation failed:", err);
-            res.status(500).json({succeeded: false, error: (err as Error).message});
+            await apiLineageRepo.save(apiLineage);
         }
+    }
+
+    router.use((request, _response, next) => {
+        next();
     });
 
-    router.get(`/get`, async (_req: Request, res: Response) => {
+    router.post(`/generate`, async (_req: Request, res: Response) => {
+            try {
+                await generateLineage()
+                res.json({succeeded: true});
+            } catch
+                (err) {
+                console.error("Lineage generation failed:", err);
+                res.status(500).json({succeeded: false, error: (err as Error).message});
+            }
+        }
+    );
+
+    router.get(`/get`, async (req: Request, res: Response) => {
+        const params = (req.query ?? {}) as Record<string, unknown>
+        const {generate} = params;
+        if (generate == 'true') {
+            await generateLineage()
+        }
         const lineage = await AppDataSource.getRepository(ApiLineageEntity).find({
             relations: ['records', 'records.fields'],
         });

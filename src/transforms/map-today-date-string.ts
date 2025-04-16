@@ -1,6 +1,6 @@
 import {FieldTransform, FieldTransformerFactory} from "../types";
 
-export const mapTodayDateString: FieldTransformerFactory = (): FieldTransform => {
+export function mapTodayDateString(): FieldTransform {
     return {
         transform: (_inputFields: string[], _inputDictionary: Record<string, any>): string => {
             return (new Date()).toISOString();
@@ -8,3 +8,5 @@ export const mapTodayDateString: FieldTransformerFactory = (): FieldTransform =>
         description: "Computed value of current UTC date and time."
     }
 }
+
+export const mapTodayDateStringFactory: FieldTransformerFactory = mapTodayDateString;

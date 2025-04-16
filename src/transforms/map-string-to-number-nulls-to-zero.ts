@@ -1,8 +1,7 @@
 import {FieldTransform, FieldTransformerFactory} from "../types";
 import _ from "lodash";
 
-export const mapStringToNumberNullsToZero: FieldTransformerFactory =
-    (options?: { input?: string }): FieldTransform => {
+export function mapStringToNumberNullsToZero(options?: { input?: string }): FieldTransform {
         const {input} = options ?? {};
         return {
             inputs: input ? [input] : undefined,
@@ -12,3 +11,5 @@ export const mapStringToNumberNullsToZero: FieldTransformerFactory =
             }
         }
     }
+
+    export const mapStringToNumberNullsToZeroFactory: FieldTransformerFactory = mapStringToNumberNullsToZero;

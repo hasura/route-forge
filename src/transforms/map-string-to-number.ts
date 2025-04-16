@@ -1,8 +1,7 @@
 import {FieldTransform, FieldTransformerFactory} from "../types/";
 import _, {round} from "lodash";
 
-export const mapStringToNumber: FieldTransformerFactory =
-    (options?: { input?: string, roundTo?: number }): FieldTransform => {
+export function mapStringToNumber(options?: { input?: string, roundTo?: number }): FieldTransform {
         const {input, roundTo} = options || {};
         let description = `Converts ${input ?? "the input"} from a string to a number converting non-numerics to zeros.`
         if (roundTo) {
@@ -20,3 +19,5 @@ export const mapStringToNumber: FieldTransformerFactory =
             }
         }
     }
+
+    export const mapStringToNumberFactory: FieldTransformerFactory = mapStringToNumber;

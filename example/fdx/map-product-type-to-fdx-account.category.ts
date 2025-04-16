@@ -1,9 +1,9 @@
-import {FieldTransform} from "../../src";
+import {FieldTransform, FieldTransformerFactory} from "../../src";
 import {AccountCategory} from "./fdxapi.core.enums";
 import _ from "lodash";
 
-export const fdxapiMapProductTypeToAccountCategory = (options: { input?: string }): FieldTransform => {
-    const {input} = options;
+export function mapProductTypeToFdxAccountCategory(options?: { input?: string }) {
+    const {input} = options ?? {};
     return {
         description: `Convert a product type to an FDX account category based on the following mapping rules:
 - For product types 'CHECKING', 'SAVINGS', 'STUDENT', 'YOUTH', 'SENIOR', 'PREMIUM', 'FOREIGN_CURRENCY', and 'SPECIALIZED', the returned account category is '${AccountCategory.DEPOSIT_ACCOUNT}'.
@@ -44,3 +44,5 @@ export const fdxapiMapProductTypeToAccountCategory = (options: { input?: string 
         }
     }
 }
+
+export const mapProductTypeToFdxAccountCategoryFactory: FieldTransformerFactory = mapProductTypeToFdxAccountCategory;

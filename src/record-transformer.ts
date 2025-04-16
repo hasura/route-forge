@@ -1,7 +1,10 @@
 import {AppDataSource, FieldTransformationDetail, RecordTransformation} from './logging';
 import {Request} from 'express';
-import {RecordTransformer} from "./types";
+import {FieldTransform, RecordTransformer} from "./types";
 import _ from "lodash";
+import assert from "assert";
+import {fieldTransformerFactories, getFieldTransformer} from "./transforms";
+
 
 export const recordTransformer = <T>(
     recordTransformer: RecordTransformer,
@@ -31,7 +34,9 @@ export const recordTransformer = <T>(
 
     for (const key of Object.keys(recordTransformer.fieldTransformers)) {
 
-        const {inputs, transform, description} = recordTransformer.fieldTransformers[key];
+        const fieldTransformer = getFieldTransformer(recordTransformer.fieldTransformers[key])
+        assert(fieldTransformer)
+        const {inputs, transform, description} = fieldTransformer;
         const inputFieldNames = inputs && inputs.length > 0 ? inputs : [key];
         const inputValues = inputFieldNames.map(name => _.get(record, name, null));
         const outputValue = transform(inputFieldNames, record);

@@ -65,43 +65,6 @@ export const Config: IConfig = {
                 out: transformAccounts,
             },
             outRecordTransformers: ['account']
-        },
-        {
-            path: `${prePath}/accounts/:accountId`,
-            methods: ["GET"],
-            query: `
-        query accountsByAccountId($accountId: String!) {
-          // Add actual query fields here when needed
         }
-      `,
-            transformers: {
-                out: transformAccount,
-            },
-            outRecordTransformers: ['account']
-        },
-        {
-            path: `${prePath}/accounts/:accountId/transactions`,
-            methods: ["GET"],
-            query: `
-        query transactions($accountId: String!) { 
-          // Add actual query fields here when needed
-        }
-      `,
-            transformers: {
-                out: transformTransactions,
-            }
-        },
-        {
-            path: `${prePath}/accounts/:accountId/reward-programs`,
-            methods: ["GET"],
-            query: `
-        query rewardPrograms($accountId: String!) { 
-          // Add actual query fields here when needed
-        }
-      `,
-            transformers: {
-                out: transformRewardPrograms,
-            }
-        },
     ],
 };

@@ -1,8 +1,7 @@
 import {FieldTransform, FieldTransformerFactory} from "../types";
 import _ from "lodash";
 
-export const mapRfcStringToDateString: FieldTransformerFactory =
-    (options?: { input?: string }): FieldTransform => {
+export function mapRfcStringToDateString(options?: { input?: string }): FieldTransform {
         const {input} = options || {};
         let description = `Converts ${input ?? "the input"} from an any RFC date-like string to an RFC date string.`
         return {
@@ -21,3 +20,5 @@ export const mapRfcStringToDateString: FieldTransformerFactory =
             }
         }
     }
+
+    export const mapRfcStringToDateStringFactory: FieldTransformerFactory = mapRfcStringToDateString;
