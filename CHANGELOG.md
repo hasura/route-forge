@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/hasura/route-forge/compare/v1.1.1...v1.2.0) (2025-04-16)
+
+
+### Features
+
+* Made transforms 100% metadata ([63875b2](https://github.com/hasura/route-forge/commit/63875b286dfe7ad8bc1147fa51d87a848aca3044))
+
 ## [1.1.1](https://github.com/hasura/route-forge/compare/v1.1.0...v1.1.1) (2025-04-15)
 
 
