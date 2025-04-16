@@ -13,12 +13,14 @@ export interface FieldTransform {
     description: string
 }
 
+export type FieldTransformMetadata = FieldTransform | [string] | [string, any[]];
+
 /**
  * Interface representing a collection of field transformers for different record types.
  * The key represents the output field key.
  */
 export interface FieldTransformers {
-    [recordType: string]: FieldTransform
+    [recordType: string]: FieldTransformMetadata
 }
 
 /**

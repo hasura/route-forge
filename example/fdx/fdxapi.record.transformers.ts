@@ -1,15 +1,11 @@
-import {DomainTransformer} from "../../src";
-import {fdxapiMapProductTypeToAccountCategory} from "./fdxapi.map-product-type-to-account-category";
-import {mapConsumerBankingStatus} from "./fdxapi.map-consumer-banking-status";
+import {DomainTransformer, registerFieldTransformerFactories} from "../../src";
 import {
-    mapNumberToString,
-    mapRfcStringToDateString,
-    mapStraightThrough,
-    mapStringToNumber,
-    mapStringToNumberNullsToZero,
-    mapTodayDateString
-} from "../../src";
+    mapProductTypeToFdxAccountCategory,
+    mapProductTypeToFdxAccountCategoryFactory
+} from "./map-product-type-to-fdx-account.category";
+import {mapConsumerBankingStatus, mapConsumerBankingStatusFactory} from "./fdxapi.map-consumer-banking-status";
 
+registerFieldTransformerFactories([mapProductTypeToFdxAccountCategoryFactory, mapConsumerBankingStatusFactory]);
 
 export const fdxTransformers: DomainTransformer = {
     description: "Convert consumerBanking.account to FDX account",
@@ -20,22 +16,22 @@ export const fdxTransformers: DomainTransformer = {
             outputDescription: "FDX (Account | DepositAccount) type.",
             pkNames: ["consumerBankingAccountId"],
             fieldTransformers: {
-                status: mapConsumerBankingStatus(),
-                accountCategory: fdxapiMapProductTypeToAccountCategory({input: 'consumerBankingProduct.productType'}),
-                accountId: mapNumberToString({input: 'consumerBankingAccountId'}),
-                accountNumber: mapStraightThrough({input: 'accountNumber'}),
-                balanceAsOf: mapTodayDateString(),
-                currentBalance: mapStringToNumberNullsToZero(),
-                availableBalance: mapStringToNumberNullsToZero(),
-                openingDayBalance: mapStringToNumberNullsToZero(),
-                annualPercentageYield: mapStringToNumber(),
-                interestYtd: mapStringToNumber(),
-                term: mapStringToNumber({roundTo: 1}),
-                nickname: mapStraightThrough(),
-                displayName: mapStraightThrough(),
-                maturityDate: mapRfcStringToDateString(),
-                "currency.currencyCode": mapStraightThrough({input: 'currency.code'}),
-                productName: mapStraightThrough({input: 'consumerBankingProduct.productName'})
+                status: ["mapConsumerBankingStatus"],
+                accountCategory: ["mapProductTypeToFdxAccountCategory", [{input: 'consumerBankingProduct.productType'}]],
+                accountId: ["mapNumberToString", [{input: 'consumerBankingAccountId'}]],
+                accountNumber: ["mapStraightThrough", [{input: 'accountNumber'}]],
+                balanceAsOf: ["mapTodayDateString"],
+                currentBalance: ["mapStringToNumberNullsToZero"],
+                availableBalance: ["mapStringToNumberNullsToZero"],
+                openingDayBalance: ["mapStringToNumberNullsToZero"],
+                annualPercentageYield: ["mapStringToNumber"],
+                interestYtd: ["mapStringToNumber"],
+                term: ["mapStringToNumber", [{roundTo: 1}]],
+                nickname: ["mapStraightThrough"],
+                displayName: ["mapStraightThrough"],
+                maturityDate: ["mapRfcStringToDateString"],
+                "currency.currencyCode": ["mapStraightThrough", [{input: 'currency.code'}]],
+                productName: ["mapStraightThrough", [{input: 'consumerBankingProduct.productName'}]]
             }
         },
         'account/lightweight': {
@@ -44,14 +40,14 @@ export const fdxTransformers: DomainTransformer = {
             outputDescription: "FDX (Account | DepositAccount) type.",
             pkNames: ["consumerBankingAccountId"],
             fieldTransformers: {
-                status: mapConsumerBankingStatus(),
-                accountCategory: fdxapiMapProductTypeToAccountCategory({input: 'consumerBankingProduct.productType'}),
-                accountId: mapNumberToString({input: 'accountNumber'}),
-                displayName: mapStraightThrough(),
-                nickname: mapStraightThrough(),
-                balanceAsOf: mapTodayDateString(),
-                currentBalance: mapStringToNumberNullsToZero(),
-                openingDayBalance: mapStringToNumberNullsToZero(),
+                status: ["mapConsumerBankingStatus"],
+                accountCategory: ["mapProductTypeToFdxAccountCategory", [{input: 'consumerBankingProduct.productType'}]],
+                accountId: ["mapNumberToString", [{input: 'accountNumber'}]],
+                displayName: ["mapStraightThrough"],
+                nickname: ["mapStraightThrough"],
+                balanceAsOf: ["mapTodayDateString"],
+                currentBalance: ["mapStringToNumberNullsToZero"],
+                openingDayBalance: ["mapStringToNumberNullsToZero"],
             }
         }
     }
