@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/hasura/route-forge/compare/v1.2.0...v1.3.0) (2025-04-18)
+
+
+### Features
+
+* Fixed API Lineage entity. Made REST config 100% metadata driven. Cleaned up code. ([f429cc5](https://github.com/hasura/route-forge/commit/f429cc55a37c4f270dccb9e9d239562e6d26bd76))
+
 # [1.2.0](https://github.com/hasura/route-forge/compare/v1.1.1...v1.2.0) (2025-04-16)
 
 
