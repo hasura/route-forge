@@ -1,16 +1,10 @@
-import {
-    AccountResponse,
-    AccountsResponse,
-    ErrorResponse,
-    RewardProgramsResponse,
-    StatementsResponse,
-    TransactionsResponse
-} from "./fdxapi.core.interfaces";
+import {Account, AccountResponse, RewardProgramsResponse, Statement, Transaction,} from "./fdxapi.core.interfaces";
+import {ErrorResponse, PaginatedResponse} from "../../src";
 
 export type FdxResponse =
     | RewardProgramsResponse
     | AccountResponse
-    | AccountsResponse
-    | TransactionsResponse
-    | StatementsResponse
+    | PaginatedResponse<Account>
+    | PaginatedResponse<Transaction>
+    | PaginatedResponse<Statement>
     | ErrorResponse

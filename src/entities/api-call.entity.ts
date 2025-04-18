@@ -6,25 +6,43 @@ import {v4 as uuidv4} from 'uuid';
 
 @Entity({
     name: "api_calls",
-    schema: BaseEntity.getSchema()
+    schema: BaseEntity.getSchema(),
+    comment: 'Records API calls made to the system for auditing and lineage tracking.'
 })
 export class ApiCall {
-    @PrimaryColumn("uuid")
+    @PrimaryColumn("uuid", {
+        comment: 'Unique identifier for the API call.'
+    })
     id: string = uuidv4();
 
-    @Column()
+    @Column({
+        comment: 'HTTP method used for the API call (GET, POST, etc.).'
+    })
     method!: string;
 
-    @Column()
+    @Column({
+        comment: 'API endpoint path that was called.'
+    })
     path!: string;
 
-    @Column({type: "jsonb", nullable: true})
-    queryParams!: Record<string, unknown>;
+    @Column({
+        type: "text",
+        nullable: true,
+        comment: 'Query parameters sent with the API call, stored as TEXT.'
+    })
+    queryParams!: string;
 
-    @Column({type: "jsonb", nullable: true})
+    @Column({
+        type: "text",
+        nullable: true,
+        comment: 'HTTP headers sent with the API call, stored as TEXT.'
+    })
     requestHeaders!: Record<string, unknown>;
 
-    @CreateDateColumn({type: 'timestamp with time zone'})
+    @CreateDateColumn({
+        type: 'timestamp with time zone',
+        comment: 'Timestamp when the API call was made.'
+    })
     calledAt!: Date;
 
     @OneToMany(() => RecordTransformation, rt => rt.apiCall)

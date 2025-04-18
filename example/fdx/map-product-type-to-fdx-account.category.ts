@@ -1,4 +1,4 @@
-import {FieldTransform, FieldTransformerFactory} from "../../src";
+import {FieldTransformerFactory} from "../../src";
 import {AccountCategory} from "./fdxapi.core.enums";
 import _ from "lodash";
 

@@ -3,32 +3,57 @@ import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn} from "t
 import {ApiLineageEntity} from "./api-lineage.entity";
 import {FieldLineageEntity} from "./field-lineage.entity";
 
-@Entity({name: 'record_lineage', schema: BaseEntity.getSchema()})
+@Entity({
+    name: 'record_lineage',
+    schema: BaseEntity.getSchema(),
+    comment: 'Maps the lineage of data records through transformations for traceability.'
+})
 export class RecordLineageEntity extends BaseEntity {
 
-    @PrimaryColumn()
+    @PrimaryColumn({
+        comment: 'Unique identifier for the record lineage.'
+    })
     recordLineageId!: string; // e.g., `${apiLineageId}_${recordTransformerName}`
 
-    @Column()
+    @Column({
+        comment: 'The type/entity of input data in this lineage.'
+    })
     inputType!: string;
 
-    @Column()
+    @Column({
+        comment: 'The type/entity of output data in this lineage.'
+    })
     outputType!: string;
 
-    @Column({type: 'text', nullable: true})
+    @Column({
+        type: 'text',
+        nullable: true,
+        comment: 'General description of this data lineage relationship.'
+    })
     description?: string;
 
-    @Column({type: 'text', nullable: true})
+    @Column({
+        type: 'text',
+        nullable: true,
+        comment: 'Description of the input data source or format.'
+    })
     inputDescription?: string;
 
-    @Column({type: 'text', nullable: true})
+    @Column({
+        type: 'text',
+        nullable: true,
+        comment: 'Description of the output data destination or format.'
+    })
     outputDescription?: string;
 
-    @Column({nullable: true})
+    @Column({
+        nullable: true,
+        comment: 'Names of primary key fields used to track the record through transformations.'
+    })
     pkNames?: string;
 
     @ManyToOne(() => ApiLineageEntity, api => api.records, {onDelete: 'CASCADE'})
-    @JoinColumn({name: 'apiLineageId'})
+    @JoinColumn()
     apiLineage!: ApiLineageEntity | null;
 
     @OneToMany(() => FieldLineageEntity, field => field.recordLineage, {cascade: true})

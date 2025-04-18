@@ -38,7 +38,7 @@ paths:
       tags:
         - Tax Forms
       security:
-        - TaxBasicAuth: []
+        - TaxBasicAuth: [ ]
         - OAuthFapi1Advanced:
             - fdx:tax:read
       parameters:
@@ -256,7 +256,7 @@ paths:
       tags:
         - Submit Tax Forms
       security:
-        - OAuthFapi1Baseline: []
+        - OAuthFapi1Baseline: [ ]
       requestBody:
         content:
           application/json:
@@ -332,7 +332,7 @@ paths:
       tags:
         - Tax Forms
       security:
-        - TaxBasicAuth: []
+        - TaxBasicAuth: [ ]
         - OAuthFapi1Advanced:
             - fdx:tax:read
       parameters:
@@ -555,7 +555,7 @@ paths:
       tags:
         - Submit Tax Forms
       security:
-        - OAuthFapi1Baseline: []
+        - OAuthFapi1Baseline: [ ]
       requestBody:
         content:
           application/json:

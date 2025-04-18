@@ -17,7 +17,7 @@ tags:
   - name: User Consent
     description: Manage customer consent grants
 security:
-  - OAuthFapi1Baseline: []
+  - OAuthFapi1Baseline: [ ]
 paths:
   ############################################################
   #
@@ -437,7 +437,7 @@ components:
     JwtProfile:
       title: FDX JWT Profile
       description: FDX JWT Profile enabling transport of ConsentGrant details in OAuth 'access_token', extended from
-                   [JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens](https://datatracker.ietf.org/doc/html/rfc9068)
+        [JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens](https://datatracker.ietf.org/doc/html/rfc9068)
       type: object
       properties:
         iss:

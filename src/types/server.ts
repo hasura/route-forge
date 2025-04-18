@@ -40,7 +40,7 @@ export interface RestifiedEndpoint {
     outRecordTransformers?: string[];
     transformers: {
         in?: TransformGraphQLResponseIn;
-        out?: TransformerFunction;
+        out?: TransformerFunction | string | [string, [unknown]];
     };
 }
 
