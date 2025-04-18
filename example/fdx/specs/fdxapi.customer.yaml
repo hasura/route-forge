@@ -130,7 +130,7 @@ components:
     OAuthFapi1Advanced:
       $ref: './fdxapi.components.yaml#/components/securitySchemes/OAuthFapi1Advanced'
 
-  parameters: {}
+  parameters: { }
 
   schemas:
     ############################################################

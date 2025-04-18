@@ -17,7 +17,7 @@ tags:
   - name: Recipients
     description: Manage recipients
 security:
-  - OAuthFapi1Baseline: []
+  - OAuthFapi1Baseline: [ ]
 paths:
   ############################################################
   #

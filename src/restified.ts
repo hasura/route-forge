@@ -2,6 +2,7 @@ import {SpanStatusCode, trace} from "@opentelemetry/api";
 import {Request, Response} from 'express';
 import {StatusCodes,} from 'http-status-codes';
 import {IConfig, RawRequest, RestifiedEndpoint} from "./types";
+import {getTransformerFunction} from "./transforms/response-transformer-factories";
 
 const queryString = require('qs');
 
@@ -66,7 +67,8 @@ export const restifiedHandler = (Config: IConfig, request: Request, response: Re
                         request,
                         graphqlServerUrl,
                     );
-                    const newResult = endpoint.transformers?.out?.(request.query, result, request, Config.domainTransformer.recordTransformers) || result;
+                    const outTransformer = getTransformerFunction(endpoint.transformers?.out);
+                    const newResult = outTransformer?.(request.query, result, request, Config.domainTransformer.recordTransformers) || result;
                     span.setStatus({
                         code: SpanStatusCode.OK,
                         message: String("Query executed successfully"),

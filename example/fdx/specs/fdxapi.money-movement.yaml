@@ -2494,7 +2494,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/MerchantForUpdate'
         - type: object
-          required: [status]
+          required: [ status ]
           properties:
             payeeId:
               $ref: './fdxapi.components.yaml#/components/schemas/Identifier'
@@ -2565,7 +2565,7 @@ components:
       title: Payee entity
       description: Payee to whom funds can be transferred. Can be extended to support additional types of payees
       type: object
-      required: [merchant]
+      required: [ merchant ]
       properties:
         merchant:
           $ref: '#/components/schemas/Merchant'
@@ -2577,7 +2577,7 @@ components:
       title: Payee For Update entity
       description: Payee's fields to be updated
       type: object
-      required: [merchant]
+      required: [ merchant ]
       properties:
         merchant:
           $ref: '#/components/schemas/MerchantForUpdate'
@@ -2592,7 +2592,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/SynchronizableArray'
         - type: object
-          required: [payees]
+          required: [ payees ]
           properties:
             payees:
               type: array
@@ -2607,7 +2607,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/PaymentForUpdate'
         - type: object
-          required: [paymentId, status]
+          required: [ paymentId, status ]
           properties:
             paymentId:
               $ref: './fdxapi.components.yaml#/components/schemas/Identifier'
@@ -2661,7 +2661,7 @@ components:
       title: Payment For Update entity
       description: Payment entity used for creation and update of a payment
       type: object
-      required: [fromAccountId, toPayeeId, amount, dueDate]
+      required: [ fromAccountId, toPayeeId, amount, dueDate ]
       properties:
         fromAccountId:
           $ref: './fdxapi.components.yaml#/components/schemas/Identifier'
@@ -2953,7 +2953,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/SynchronizableArray'
         - type: object
-          required: [payments]
+          required: [ payments ]
           properties:
             payments:
               type: array
@@ -2991,7 +2991,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/RecurringPaymentForUpdate'
         - type: object
-          required: [status]
+          required: [ status ]
           properties:
             recurringPaymentId:
               $ref: './fdxapi.components.yaml#/components/schemas/Identifier'
@@ -3018,7 +3018,7 @@ components:
       title: Recurring Payment Duration entity
       description: Describes a payment's duration
       type: object
-      required: [type]
+      required: [ type ]
       properties:
         type:
           $ref: '#/components/schemas/RecurringPaymentDurationType'
@@ -3032,7 +3032,7 @@ components:
       description: Used to create or update a recurring payment.
         Financial institution is free to adjust the payment date to accommodate weekends and holidays
       type: object
-      required: [frequency, fromAccountId, toPayeeId, amount, dueDate]
+      required: [ frequency, fromAccountId, toPayeeId, amount, dueDate ]
       properties:
         frequency:
           $ref: '#/components/schemas/RecurringPaymentFrequency'
@@ -3064,7 +3064,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/SynchronizableArray'
         - type: object
-          required: [recurringPayments]
+          required: [ recurringPayments ]
           properties:
             recurringPayments:
               type: array
@@ -3152,7 +3152,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/SynchronizableArray'
         - type: object
-          required: [transfers]
+          required: [ transfers ]
           properties:
             transfers:
               type: array

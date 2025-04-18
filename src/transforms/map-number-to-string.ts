@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { FieldTransform, FieldTransformer, FieldTransformerFactory } from '../types';
+import {FieldTransform, FieldTransformerFactory} from '../types';
 
 export function mapNumberToString(options?: { input?: string }): FieldTransform {
     const {input} = options ?? {};

@@ -17,7 +17,7 @@ tags:
   - name: Fraud Notification
     description: Notify of suspected fraud
 security:
-  - OAuthFapi1Baseline: []
+  - OAuthFapi1Baseline: [ ]
 paths:
   ############################################################
   #

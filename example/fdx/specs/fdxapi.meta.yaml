@@ -17,7 +17,7 @@ tags:
   - name: Meta
     description: API management and metrics
 security:
-  - OAuthFapi1Baseline: []
+  - OAuthFapi1Baseline: [ ]
 
 paths:
   ############################################################

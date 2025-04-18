@@ -17,7 +17,7 @@ tags:
   - name: Event Notifications
     description: Manage Event Notifications
 security:
-  - OAuthFapi1Baseline: []
+  - OAuthFapi1Baseline: [ ]
 paths:
   ############################################################
   #
@@ -574,7 +574,7 @@ components:
     Notification:
       title: Notification entity
       description: Provides the base fields of a notification. Clients will read the
-                   `type` property to determine the expected notification payload
+        `type` property to determine the expected notification payload
       type: object
       properties:
         notificationId:

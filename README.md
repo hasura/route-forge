@@ -2,11 +2,14 @@
 
 ## Overview
 
-This library plugin for Hasura DDN (Distributed Data Network) makes it a breeze to add RESTified GraphQL endpoints to the DDN supergraph. It transforms GraphQL queries into REST-like endpoints, making it easier to integrate with systems that prefer REST APIs.
+This library plugin for Hasura DDN (Distributed Data Network) makes it a breeze to add RESTified GraphQL endpoints to
+the DDN supergraph. It transforms GraphQL queries into REST-like endpoints, making it easier to integrate with systems
+that prefer REST APIs.
 
 ## Features
 
-- Transform GraphQL queries into REST-like endpoints using a structure transformation engine that generates data lineage and provenance documentation.
+- Transform GraphQL queries into REST-like endpoints using a structure transformation engine that generates data lineage
+  and provenance documentation.
 - Configurable endpoint mapping - the transformation engine lets you create any output shape from any input shape
 - Variable extraction from URL parameters, query strings, and request body
 - OpenTelemetry integration for tracing
@@ -17,10 +20,10 @@ This library plugin for Hasura DDN (Distributed Data Network) makes it a breeze 
 1. Just run startServer(IConfig), passing a structure representation of the inputs and output.
 2. When a request is received, it checks if it matches any configured RESTified endpoints.
 3. If a match is found, the plugin:
-   - Extracts variables from the request (URL parameters, query string, body)
-   - Executes the corresponding GraphQL query with the extracted variables
-   - Transforms the response into the desired shape returns it. 
-   
+    - Extracts variables from the request (URL parameters, query string, body)
+    - Executes the corresponding GraphQL query with the extracted variables
+    - Transforms the response into the desired shape returns it.
+
 ## Configuration
 
 Configure the plugin in `example/rest.config.ts` or your choice:
@@ -62,6 +65,7 @@ export const Config = {
 ```
 
 You can get manage lineage with these endpoints:
+
 - Generate Lineage - `/v1/api/rest/lineage/generate`
 - Get Lineage - `/v1/api/rest/lineage/get`
 
@@ -341,7 +345,8 @@ If `API_SPEC_PATH` points to a valid OpenAPI spec, you can also get the swagger 
 
 ## Development
 
-**Note**: We are using Cloudflare wrangler for local development and deployment. However, you can use any other tool for the same. You will have to modify the files accordingly.
+**Note**: We are using Cloudflare wrangler for local development and deployment. However, you can use any other tool for
+the same. You will have to modify the files accordingly.
 
 ### Local development
 
@@ -372,7 +377,8 @@ To run the plugin locally, you can use the following steps:
    npm dev
    ```
 
-The above command will start a local server that listens for incoming requests. The server runs on port 8787 by default. The URL of the local server will be displayed in the terminal.
+The above command will start a local server that listens for incoming requests. The server runs on port 8787 by default.
+The URL of the local server will be displayed in the terminal.
 
 ### Cloud deployment
 
@@ -392,11 +398,13 @@ For cloud deployment, you can use the following steps in addition to the local d
    npm run deploy
    ```
 
-The above command should deploy the RESTified endpoints plugin (as a lambda) using Cloudflare workers. The URL of the deployed plugin will be displayed in the terminal.
+The above command should deploy the RESTified endpoints plugin (as a lambda) using Cloudflare workers. The URL of the
+deployed plugin will be displayed in the terminal.
 
 ## Using the plugin in DDN
 
-Update the metadata to add the plugin-related config (in global subgraph). Also, add the env vars for the URL of local dev and cloud deployment:
+Update the metadata to add the plugin-related config (in global subgraph). Also, add the env vars for the URL of local
+dev and cloud deployment:
 
 ```yaml
 ---
@@ -542,7 +550,8 @@ ddn supergraph build create
 
 Please update the GRAPHQL_SERVER_URL variable in the `wrangler.toml` with the project's graphql endpoint.
 
-**Note**: For end-to-end tracing, you would have to update the `wrangler.toml` file to add the Hasura PAT in `OTEL_EXPORTER_PAT` var.
+**Note**: For end-to-end tracing, you would have to update the `wrangler.toml` file to add the Hasura PAT
+in `OTEL_EXPORTER_PAT` var.
 
 ## Adding new RESTified endpoints
 
@@ -582,7 +591,8 @@ After adding new endpoints, redeploy the plugin for the changes to take effect.
 
 ## Limitations and Future Improvements
 
-- Currently the plugin supports basic variable extraction. More complex scenarios might require additional implementation.
+- Currently the plugin supports basic variable extraction. More complex scenarios might require additional
+  implementation.
 
 ## Contributing
 

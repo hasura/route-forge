@@ -1,5 +1,5 @@
 // lineage-types.ts
-import { OpenAPIV3 } from 'express-openapi-validator/dist/framework/types';
+import {OpenAPIV3} from 'express-openapi-validator/dist/framework/types';
 
 export const LineageFieldSchema: OpenAPIV3.SchemaObject = {
     type: "object",

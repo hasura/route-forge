@@ -1,10 +1,4 @@
 import {IConfig} from "../../src";
-import {
-    transformAccount,
-    transformAccounts,
-    transformRewardPrograms,
-    transformTransactions
-} from "./fdxapi.core.transformers";
 import * as http from "http";
 import {fdxTransformers} from "./fdxapi.record.transformers";
 
@@ -62,7 +56,13 @@ export const Config: IConfig = {
         }
       `,
             transformers: {
-                out: transformAccounts,
+                out: [
+                    "paginatedResponse", [{
+                        resourceName: 'consumerBankingAccounts',
+                        transformerKey: 'account',
+                        itemsKey: 'accounts'
+                    }]
+                ],
             },
             outRecordTransformers: ['account']
         }

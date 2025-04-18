@@ -1,13 +1,12 @@
 import * as path from "path";
 import * as fs from "fs";
 import * as yaml from "js-yaml";
-import SwaggerParser, { FileInfo } from '@apidevtools/swagger-parser';
+import SwaggerParser, {FileInfo} from '@apidevtools/swagger-parser';
 import * as OpenApiValidator from 'express-openapi-validator';
 import swaggerUi from "swagger-ui-express";
 import _ from "lodash";
-import express, { Router } from 'express';
-import { IConfig } from "./types";
-import { LineageFieldSchema, LineageRecordSchema, LineageApiSchema, LineageResponseSchema } from "./types";
+import express, {Router} from 'express';
+import {IConfig, LineageApiSchema, LineageFieldSchema, LineageRecordSchema, LineageResponseSchema} from "./types";
 import assert from "assert";
 
 export function swaggerFactory(config: IConfig, prePath: string): Router {
@@ -71,7 +70,7 @@ export function swaggerFactory(config: IConfig, prePath: string): Router {
         }
 
         // Add Data Governance tag if it doesn't exist
-        if (!resolvedSpec.tags.some((tag: {name: string}) => tag.name === 'Data Governance')) {
+        if (!resolvedSpec.tags.some((tag: { name: string }) => tag.name === 'Data Governance')) {
             resolvedSpec.tags.push({
                 name: 'Data Governance',
                 description: 'API endpoints for data governance and lineage'

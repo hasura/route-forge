@@ -1,9 +1,9 @@
 import {AppDataSource, FieldTransformationDetail, RecordTransformation} from './logging';
 import {Request} from 'express';
-import {FieldTransform, RecordTransformer} from "./types";
+import {RecordTransformer} from "./types";
 import _ from "lodash";
 import assert from "assert";
-import {fieldTransformerFactories, getFieldTransformer} from "./transforms";
+import {getFieldTransformer} from "./transforms";
 
 
 export const recordTransformer = <T>(

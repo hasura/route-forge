@@ -1,40 +1,17 @@
 // interfaces.ts
 
 import {AccountCategory, BalanceType, DebitCreditMemo, TransactionStatus} from './fdxapi.core.enums';
+import {ErrorResponse} from "../../src";
 
-// Common Error interface used across many responses
-export interface ErrorResponse {
-    code: string;
-    message: string;
-    debugMessage: string;
-}
-
-// Schema for Paginated Responses
-interface PaginatedResponse<T> {
-    page: {
-        nextOffset?: string;
-        total: number;
-    };
-    links?: {
-        next: {
-            href: string;
-        };
-    };
-    data?: T[];
-}
 
 // Example for Account Statement Response
-interface Statement {
+export interface Statement {
     accountId: string;
     statementId: string;
 }
 
-export interface StatementsResponse extends PaginatedResponse<Statement> {
-    statements: Statement[]
-}
-
 // Example for Transaction Response
-interface Transaction {
+export interface Transaction {
     accountCategory: AccountCategory;
     accountId: string;
     transactionId: string;
@@ -46,9 +23,6 @@ interface Transaction {
     transactionStatus: TransactionStatus;
 }
 
-export interface TransactionsResponse extends PaginatedResponse<Transaction> {
-    transactions: Transaction[]
-}
 
 interface BaseAccount {
     accountCategory: AccountCategory;
@@ -147,10 +121,6 @@ export type Account =
 
 export interface AccountResponse {
     account: Account;
-}
-
-export interface AccountsResponse extends PaginatedResponse<Account> {
-    accounts: Account[]
 }
 
 // Example for Reward Programs Response

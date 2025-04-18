@@ -8,7 +8,7 @@ definition:
     valueFromEnv: FDX_URL
   config:
     matchPath: "/v1/api/rest/css"
-    matchMethods: ["GET"]
+    matchMethods: [ "GET" ]
     request:
       method: GET
       headers:
@@ -21,10 +21,10 @@ definition:
           hasura-m-auth:
             valueFromEnv: M_AUTH_KEY
       rawRequest:
-        path: {}
-        query: {}
-        method: {}
-        body: {}
+        path: { }
+        query: { }
+        method: { }
+        body: { }
     response:
       headers:
         additional:
@@ -40,7 +40,7 @@ definition:
     valueFromEnv: FDX_URL
   config:
     matchPath: "/v1/api/rest/docs"
-    matchMethods: ["GET"]
+    matchMethods: [ "GET" ]
     request:
       method: GET
       headers:
@@ -53,10 +53,10 @@ definition:
           hasura-m-auth:
             valueFromEnv: M_AUTH_KEY
       rawRequest:
-        path: {}
-        query: {}
-        method: {}
-        body: {}
+        path: { }
+        query: { }
+        method: { }
+        body: { }
     response:
       headers:
         additional:
@@ -72,7 +72,7 @@ definition:
     valueFromEnv: FDX_URL
   config:
     matchPath: "/v1/api/rest/*"
-    matchMethods: ["GET"]
+    matchMethods: [ "GET" ]
     request:
       method: GET
       headers:
@@ -87,10 +87,10 @@ definition:
           hasura-m-auth:
             valueFromEnv: M_AUTH_KEY
       rawRequest:
-        path: {}
-        query: {}
-        method: {}
-        body: {}
+        path: { }
+        query: { }
+        method: { }
+        body: { }
     response:
       headers:
         additional:
@@ -106,7 +106,7 @@ definition:
     valueFromEnv: FDX_URL
   config:
     matchPath: "/v1/api/rest/*"
-    matchMethods: ["POST"]
+    matchMethods: [ "POST" ]
     request:
       method: POST
       headers:
@@ -121,10 +121,10 @@ definition:
           hasura-m-auth:
             valueFromEnv: M_AUTH_KEY
       rawRequest:
-        path: {}
-        query: {}
-        method: {}
-        body: {}
+        path: { }
+        query: { }
+        method: { }
+        body: { }
     response:
       headers:
         additional:
