@@ -1,5 +1,5 @@
 import {SpanStatusCode, trace} from "@opentelemetry/api";
-import {Request, Response} from 'express';
+import {request, Request, Response} from 'express';
 import {StatusCodes,} from 'http-status-codes';
 import {IConfig, RawRequest, RestifiedEndpoint} from "./types";
 import {getTransformerFunction} from "./transforms/response-transformer-factories";
@@ -56,6 +56,35 @@ export const restifiedHandler = (Config: IConfig, request: Request, response: Re
                 // Extract variables
                 const variables = extractVariables(request.body, endpoint);
                 const query = endpoint?.query;
+                const input_validator = endpoint.input_validator
+                if (input_validator && request.headers) {
+                    const optionsArray = []
+                    request.headers['json-schema'] = JSON.stringify(input_validator.schema)
+                    if (input_validator.options?.log) {
+                        optionsArray.push('log');
+                    }
+                    if (input_validator.options?.db) {
+                        optionsArray.push('db');
+                    }
+                    if (input_validator.options?.allerrors) {
+                        optionsArray.push('allerrors');
+                    }
+                    if (input_validator.options?.verbose) {
+                        optionsArray.push('verbose');
+                    }
+                    if (input_validator.options?.strict) {
+                        optionsArray.push('strict')
+                    }
+                    if (optionsArray.length) {
+                        request.headers['options'] = optionsArray.join(',');
+                    }
+                    if (input_validator.max_errors) {
+                        request.headers['max-validate-errors'] = input_validator.max_errors.toString()
+                    }
+                    if (input_validator.filename) {
+                        request.headers['validate-filename'] = input_validator.filename;
+                    }
+                }
 
                 // Execute GraphQL query
                 try {

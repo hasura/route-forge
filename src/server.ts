@@ -19,7 +19,7 @@ export async function startServer(config: IConfig) {
         request.method = request.body.method;
         next();
     });
-    app.use(apiCallLogger);
+    app.use(apiCallLogger(config));
 
     app.use(`${prePath}/lineage`, lineageRouterFactory(config));
 

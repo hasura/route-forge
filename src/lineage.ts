@@ -19,29 +19,32 @@ export function lineageRouterFactory(config: IConfig): Router {
         const apiLineageRepo = AppDataSource.getRepository(ApiLineageEntity);
         const now = new Date();
         const domainTransformer = config.domainTransformer;
-        const serverName = config.serverName || 'defaultServer';
+        const server_name = config.serverName || 'defaultServer';
 
         for (const endpoint of config.restifiedEndpoints({})) {
             if (!endpoint.outRecordTransformers || endpoint.outRecordTransformers.length === 0) continue;
 
-            const apiLineageId = `${serverName}_${endpoint.path}_${endpoint.methods.join('_')}`;
+            const api_lineage_id = `${server_name}_${endpoint.path}_${endpoint.methods.join('_')}`;
             let apiLineage = await apiLineageRepo.findOne({
-                where: {apiLineageId},
+                where: {api_lineage_id},
                 relations: ['records', 'records.fields'],
             });
 
             if (!apiLineage) {
                 apiLineage = apiLineageRepo.create({
-                    apiLineageId,
-                    serverName,
-                    apiCall: endpoint.path,
+                    api_lineage_id,
+                    server_name,
+                    query: endpoint.query,
+                    major_version: config.majorVersion,
+                    minor_version: config.minorVersion,
+                    api_call: endpoint.path,
                     description: `Lineage for ${endpoint.path}`,
-                    startDate: now,
+                    start_date: now,
                     records: [],
                 });
             } else {
-                apiLineage.endDate = undefined;
-                apiLineage.updatedAt = now;
+                apiLineage.end_date = undefined;
+                apiLineage.updated_at = now;
                 apiLineage.records = [];
             }
 
@@ -51,23 +54,23 @@ export function lineageRouterFactory(config: IConfig): Router {
                     throw new Error(`Record transformer not found: ${recordTransformerKey}`);
                 }
 
-                const recordLineageId = `${apiLineageId}_${recordTransformerKey}`;
+                const recordLineageId = `${api_lineage_id}_${recordTransformerKey}`;
                 const recordLineage = new RecordLineageEntity();
-                recordLineage.recordLineageId = recordLineageId;
-                recordLineage.inputType = recordTransformer.inputDescription;
-                recordLineage.outputType = recordTransformer.outputDescription;
+                recordLineage.record_lineage_id = recordLineageId;
+                recordLineage.input_type = recordTransformer.inputDescription;
+                recordLineage.output_type = recordTransformer.outputDescription;
                 recordLineage.description = recordTransformer.description;
-                recordLineage.pkNames = recordTransformer.pkNames?.join(',');
-                recordLineage.apiLineage = apiLineage;
+                recordLineage.pk_names = recordTransformer.pkNames?.join(',');
+                recordLineage.api_lineage = apiLineage;
 
                 recordLineage.fields = Object.entries(recordTransformer.fieldTransformers).map(([fieldKey, field]) => {
                     const fieldLineage = new FieldLineageEntity();
-                    fieldLineage.fieldLineageId = `${recordLineageId}_${fieldKey}`;
-                    fieldLineage.fieldName = fieldKey;
+                    fieldLineage.field_lineage_id = `${recordLineageId}_${fieldKey}`;
+                    fieldLineage.field_name = fieldKey;
                     const {description, inputs} = getFieldTransformer(field) || {};
                     fieldLineage.description = description;
-                    fieldLineage.inputFields = [inputs ?? fieldKey].join(',');
-                    fieldLineage.recordLineage = recordLineage;
+                    fieldLineage.input_fields = [inputs ?? fieldKey].join(',');
+                    fieldLineage.record_lineage = recordLineage;
                     return fieldLineage;
                 });
 

@@ -42,6 +42,18 @@ export interface RestifiedEndpoint {
         in?: TransformGraphQLResponseIn;
         out?: TransformerFunction | string | [string, [unknown]];
     };
+    input_validator?: {
+        schema: object; // JSON Schema definition
+        options?: {
+            verbose?: boolean;  // More detailed error output
+            allerrors?: boolean; // Return all errors instead of stopping at first
+            strict?: boolean;    // Stricter validation
+            log?: boolean;       // Log validation errors
+            db?: boolean;        // Store validation results in DB
+        };
+        max_errors?: number;     // Maximum number of validation errors to return
+        filename?: string;       // Custom filename for validation results
+    };
 }
 
 /**
@@ -88,6 +100,9 @@ export interface RawRequest {
  */
 export interface IConfig {
     serverName: string,
+    majorVersion: number,
+    minorVersion: number,
+    applicationId?: string,
     domainTransformer: DomainTransformer
     graphqlServer: {
         headers?: {

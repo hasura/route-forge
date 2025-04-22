@@ -13,17 +13,17 @@ export class RecordLineageEntity extends BaseEntity {
     @PrimaryColumn({
         comment: 'Unique identifier for the record lineage.'
     })
-    recordLineageId!: string; // e.g., `${apiLineageId}_${recordTransformerName}`
+    record_lineage_id!: string; // e.g., `${apiLineageId}_${recordTransformerName}`
 
     @Column({
         comment: 'The type/entity of input data in this lineage.'
     })
-    inputType!: string;
+    input_type!: string;
 
     @Column({
         comment: 'The type/entity of output data in this lineage.'
     })
-    outputType!: string;
+    output_type!: string;
 
     @Column({
         type: 'text',
@@ -37,25 +37,28 @@ export class RecordLineageEntity extends BaseEntity {
         nullable: true,
         comment: 'Description of the input data source or format.'
     })
-    inputDescription?: string;
+    input_description?: string;
 
     @Column({
         type: 'text',
         nullable: true,
         comment: 'Description of the output data destination or format.'
     })
-    outputDescription?: string;
+    output_description?: string;
 
     @Column({
         nullable: true,
         comment: 'Names of primary key fields used to track the record through transformations.'
     })
-    pkNames?: string;
+    pk_names?: string;
 
-    @ManyToOne(() => ApiLineageEntity, api => api.records, {onDelete: 'CASCADE'})
-    @JoinColumn()
-    apiLineage!: ApiLineageEntity | null;
+    @Column({ nullable: true })
+    api_lineage_id?: string; // Explicit foreign key column
 
-    @OneToMany(() => FieldLineageEntity, field => field.recordLineage, {cascade: true})
+    @ManyToOne(() => ApiLineageEntity, api => api.records, {onDelete: 'CASCADE', nullable: true})
+    @JoinColumn({ name: 'api_lineage_id', referencedColumnName: 'api_lineage_id' })
+    api_lineage?: ApiLineageEntity;
+
+    @OneToMany(() => FieldLineageEntity, field => field.record_lineage, {cascade: true})
     fields!: FieldLineageEntity[];
 }
