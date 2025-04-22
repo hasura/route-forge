@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/hasura/route-forge/compare/v1.3.0...v1.4.0) (2025-04-22)
+
+
+### Features
+
+* Added input_validator to restified endpoints. ([220421a](https://github.com/hasura/route-forge/commit/220421a69a04cd8a9ab33a12f75429b22f5d6041))
+
 # [1.3.0](https://github.com/hasura/route-forge/compare/v1.2.0...v1.3.0) (2025-04-18)
 
 
