@@ -12,37 +12,37 @@ export class FieldTransformationDetail {
     @PrimaryColumn("uuid", {
         comment: 'Unique identifier for the field transformation detail.'
     })
-    id: string = uuidv4();
+    field_transformation_detail_id: string = uuidv4();
 
     @Column({
         comment: 'Description of the specific transformation applied to this field.'
     })
-    transformDescription!: string
+    transform_description!: string
 
     @Column({
         comment: 'Name of the input field before transformation.'
     })
-    inputFieldName!: string;
+    input_field_name!: string;
 
     @Column({
         type: 'text',
         nullable: true,
         comment: 'Value of the input field before transformation.'
     })
-    inputFieldValue!: string;
+    input_field_value!: string;
 
     @Column({
         comment: 'Name of the output field after transformation.'
     })
-    outputFieldName!: string;
+    output_field_name!: string;
 
     @Column({
         type: 'text',
         nullable: true,
         comment: 'Value of the output field after transformation.'
     })
-    outputFieldValue!: string;
+    output_field_value!: string;
 
-    @ManyToOne(() => RecordTransformation, transformation => transformation.fieldDetails, {onDelete: 'CASCADE'})
+    @ManyToOne(() => RecordTransformation, transformation => transformation.field_details, {onDelete: 'CASCADE'})
     transformation!: RecordTransformation;
 }

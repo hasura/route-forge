@@ -94,7 +94,7 @@ export const paginatedResponseFunc: PaginatedResponseFunction = <T extends Recor
     } as PaginatedResponseReturn<R>;
 };
 
-export function paginatedResponseFactory(options: PaginatedResponseOptions): TransformerFunction {
+export function paginatedResponse(options: PaginatedResponseOptions): TransformerFunction {
     return function (params: Record<string, any>,
                      graphqlResponse: ExecutionResult,
                      req: Request,
@@ -103,6 +103,6 @@ export function paginatedResponseFactory(options: PaginatedResponseOptions): Tra
     }
 }
 
-export const paginatedResponse: GenericResponseFactory = paginatedResponseFactory;
+export const paginatedResponseFactory: GenericResponseFactory = paginatedResponse;
 
 

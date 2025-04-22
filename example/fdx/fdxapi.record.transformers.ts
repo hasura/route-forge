@@ -14,12 +14,12 @@ export const fdxTransformers: DomainTransformer = {
             description: "Map my bank deposit account to FDX API account",
             inputDescription: "Primarily from consumer_banking.accounts.",
             outputDescription: "FDX (Account | DepositAccount) type.",
-            pkNames: ["consumerBankingAccountId"],
+            pkNames: ["consumer_banking_account_id"],
             fieldTransformers: {
                 status: ["mapConsumerBankingStatus"],
-                accountCategory: ["mapProductTypeToFdxAccountCategory", [{input: 'consumerBankingProduct.productType'}]],
-                accountId: ["mapNumberToString", [{input: 'consumerBankingAccountId'}]],
-                accountNumber: ["mapStraightThrough", [{input: 'accountNumber'}]],
+                accountCategory: ["mapProductTypeToFdxAccountCategory", [{input: 'consumer_banking_product.product_type'}]],
+                accountId: ["mapNumberToString", [{input: 'consumer_banking_account_id'}]],
+                accountNumber: ["mapStraightThrough", [{input: 'account_number'}]],
                 balanceAsOf: ["mapTodayDateString"],
                 currentBalance: ["mapStringToNumberNullsToZero"],
                 availableBalance: ["mapStringToNumberNullsToZero"],
@@ -31,17 +31,17 @@ export const fdxTransformers: DomainTransformer = {
                 displayName: ["mapStraightThrough"],
                 maturityDate: ["mapRfcStringToDateString"],
                 "currency.currencyCode": ["mapStraightThrough", [{input: 'currency.code'}]],
-                productName: ["mapStraightThrough", [{input: 'consumerBankingProduct.productName'}]]
+                productName: ["mapStraightThrough", [{input: 'consumer_banking_product.product_name'}]]
             }
         },
         'account/lightweight': {
             description: "Map my bank deposit account to FDX API account lightweight variant.",
             inputDescription: "Primarily from consumer_banking.accounts.",
             outputDescription: "FDX (Account | DepositAccount) type.",
-            pkNames: ["consumerBankingAccountId"],
+            pkNames: ["consumer_banking_account_id"],
             fieldTransformers: {
                 status: ["mapConsumerBankingStatus"],
-                accountCategory: ["mapProductTypeToFdxAccountCategory", [{input: 'consumerBankingProduct.productType'}]],
+                accountCategory: ["mapProductTypeToFdxAccountCategory", [{input: 'consumer_banking_product.product_type'}]],
                 accountId: ["mapNumberToString", [{input: 'accountNumber'}]],
                 displayName: ["mapStraightThrough"],
                 nickname: ["mapStraightThrough"],

@@ -12,12 +12,12 @@ export class FieldLineageEntity extends BaseEntity {
     @PrimaryColumn({
         comment: 'Unique identifier for the field lineage.'
     })
-    fieldLineageId!: string; // e.g., `${recordLineageId}_${fieldName}`
+    field_lineage_id!: string; // e.g., `${recordLineageId}_${fieldName}`
 
     @Column({
         comment: 'Name of the field being tracked.'
     })
-    fieldName!: string;
+    field_name!: string;
 
     @Column({
         type: 'text',
@@ -30,9 +30,9 @@ export class FieldLineageEntity extends BaseEntity {
         nullable: true,
         comment: 'Source fields that contribute to this field, comma-separated.'
     })
-    inputFields?: string;
+    input_fields?: string;
 
     @ManyToOne(() => RecordLineageEntity, record => record.fields, {onDelete: 'CASCADE'})
     @JoinColumn()
-    recordLineage!: RecordLineageEntity;
+    record_lineage!: RecordLineageEntity;
 }

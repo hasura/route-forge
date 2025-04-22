@@ -1,5 +1,5 @@
 import {BaseEntity} from "./base-entity";
-import {Column, Entity, OneToMany, PrimaryColumn} from "typeorm";
+import {Column, Entity, ManyToOne, OneToMany, PrimaryColumn} from "typeorm";
 import {RecordLineageEntity} from "./record-lineage.entity";
 
 @Entity({
@@ -10,19 +10,38 @@ import {RecordLineageEntity} from "./record-lineage.entity";
 export class ApiLineageEntity extends BaseEntity {
 
     @PrimaryColumn({
+        type: 'uuid',
         comment: 'Unique identifier for the API lineage record.'
     })
-    apiLineageId!: string; // e.g., `${serverName}_${apiCall}`
+    api_lineage_id!: string; // e.g., `${serverName}_${apiCall}`
+
+    @Column({
+        type: 'uuid',
+        comment: 'Reference to associated app management record.'
+    })
+    app_mgmt_application_id!: string;
 
     @Column({
         comment: 'Name of the server handling the API call.'
     })
-    serverName!: string;
+    server_name!: string;
+
+    @Column({type: 'int', comment: 'The major version assigned to the API'})
+    major_version!: number
+
+    @Column({type: 'int', comment: 'The minor version assigned to the API'})
+    minor_version!: number
 
     @Column({
         comment: 'The API endpoint and method called.'
     })
-    apiCall!: string;
+    api_call!: string;
+
+    @Column({
+        type: "text",
+        comment: 'The DDN query used to source data for this API call'
+    })
+    query: string = "";
 
     @Column({
         type: 'text',
@@ -35,22 +54,22 @@ export class ApiLineageEntity extends BaseEntity {
         type: 'timestamp with time zone',
         comment: 'Timestamp when this API lineage tracking began.'
     })
-    startDate!: Date;
+    start_date!: Date;
 
     @Column({
         type: 'timestamp with time zone',
         nullable: true,
         comment: 'Timestamp when this API lineage tracking ended, if applicable.'
     })
-    endDate?: Date;
+    end_date?: Date;
 
     @Column({
         type: 'timestamp with time zone',
         nullable: true,
         comment: 'Timestamp when this record was last updated.'
     })
-    updatedAt?: Date;
+    updated_at?: Date;
 
-    @OneToMany(() => RecordLineageEntity, record => record.apiLineage, {cascade: true})
-    records!: RecordLineageEntity[];
+    @OneToMany(() => RecordLineageEntity, record => record.api_lineage, {cascade: true})
+    records?: RecordLineageEntity[];
 }

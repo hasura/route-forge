@@ -73,7 +73,7 @@ export const recordResponseFunc: RecordResponseFunction = <T extends Record<stri
     }
 };
 
-export function recordResponseFactory(options: RecordResponseOptions): TransformerFunction {
+export function recordResponse(options: RecordResponseOptions): TransformerFunction {
     return function (params: Record<string, any>,
                      graphqlResponse: ExecutionResult,
                      req: Request,
@@ -82,6 +82,6 @@ export function recordResponseFactory(options: RecordResponseOptions): Transform
     }
 }
 
-export const recordResponse: GenericResponseFactory = recordResponseFactory;
+export const recordResponseFactory: GenericResponseFactory = recordResponse;
 
 

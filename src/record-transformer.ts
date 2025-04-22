@@ -13,21 +13,21 @@ export const recordTransformer = <T>(
 ): T => {
 
     const transformation = new RecordTransformation();
-    transformation.inputType = recordTransformer.inputDescription;
-    transformation.outputType = recordTransformer.outputDescription;
+    transformation.input_type = recordTransformer.inputDescription;
+    transformation.output_type = recordTransformer.outputDescription;
     transformation.description = recordTransformer.description;
-    transformation.fieldDetails = [];
+    transformation.field_details = [];
 
     if (req && (req as any).apiCall) {
-        transformation.apiCall = (req as any).apiCall;
+        transformation.api_call = (req as any).apiCall;
     }
 
     if (recordTransformer.pkNames && recordTransformer.pkNames.length > 0) {
-        transformation.primaryKeyNames = recordTransformer.pkNames.join(',');
+        transformation.primary_key_names = recordTransformer.pkNames.join(',');
         const pkValues = recordTransformer.pkNames.reduce((acc, key) => {
             return {...acc, [key]: _.get(record, key, null)};
         }, {} as Record<string, any>);
-        transformation.primaryKeyValues = JSON.stringify(pkValues);
+        transformation.primary_key_values = JSON.stringify(pkValues);
     }
 
     const transformedRecord = {} as Partial<T>;
@@ -50,7 +50,7 @@ export const recordTransformer = <T>(
         };
 
         inputFieldNames.forEach((inputFieldName, idx) => {
-            transformation.fieldDetails.push(
+            transformation.field_details.push(
                 Object.assign(new FieldTransformationDetail(), {
                     inputFieldName,
                     outputFieldName: key,
