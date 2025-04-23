@@ -17,7 +17,7 @@ export class FieldLineageEntity extends BaseEntity {
     @Column({
         comment: 'Name of the field being tracked.'
     })
-    field_name!: string;
+    output_field!: string;
 
     @Column({
         type: 'text',
