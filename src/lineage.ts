@@ -66,7 +66,7 @@ export function lineageRouterFactory(config: IConfig): Router {
                 recordLineage.fields = Object.entries(recordTransformer.fieldTransformers).map(([fieldKey, field]) => {
                     const fieldLineage = new FieldLineageEntity();
                     fieldLineage.field_lineage_id = `${recordLineageId}_${fieldKey}`;
-                    fieldLineage.field_name = fieldKey;
+                    fieldLineage.output_field = fieldKey;
                     const {description, inputs} = getFieldTransformer(field) || {};
                     fieldLineage.description = description;
                     fieldLineage.input_fields = [inputs ?? fieldKey].join(',');

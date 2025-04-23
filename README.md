@@ -24,6 +24,8 @@ that prefer REST APIs.
     - Executes the corresponding GraphQL query with the extracted variables
     - Transforms the response into the desired shape returns it.
 
+![Conceptual Structure of the Transformation Engine](./docs/Route%20Forge.jpg)
+
 ## Configuration
 
 Configure the plugin in `example/rest.config.ts` or your choice:
