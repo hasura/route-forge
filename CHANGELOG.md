@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/hasura/route-forge/compare/v1.5.0...v1.5.1) (2025-04-23)
+
+
+### Bug Fixes
+
+* TypeORM def of app_mgmt_application_id set to nullable as per DBML def. ([a140bc6](https://github.com/hasura/route-forge/commit/a140bc6e5dfc352a49f78d22ac3aeff2f331ab51))
+
 # [1.5.0](https://github.com/hasura/route-forge/compare/v1.4.0...v1.5.0) (2025-04-23)
 
 
