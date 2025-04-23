@@ -8,7 +8,7 @@ that prefer REST APIs.
 
 ## Features
 
-- Transform GraphQL queries into REST-like endpoints using a structure transformation engine that generates data lineage
+- Transform GraphQL queries into REST-like endpoints using a metadata-driven transformation engine that generates data lineage
   and provenance documentation.
 - Configurable endpoint mapping - the transformation engine lets you create any output shape from any input shape
 - Variable extraction from URL parameters, query strings, and request body
@@ -17,7 +17,7 @@ that prefer REST APIs.
 
 ## How it works
 
-1. Just run startServer(IConfig), passing a structure representation of the inputs and output.
+1. Just run startServer(IConfig), passing a structured representation of the inputs, outputs and transformations.
 2. When a request is received, it checks if it matches any configured RESTified endpoints.
 3. If a match is found, the plugin:
     - Extracts variables from the request (URL parameters, query string, body)
