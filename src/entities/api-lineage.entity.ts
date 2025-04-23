@@ -10,16 +10,17 @@ import {RecordLineageEntity} from "./record-lineage.entity";
 export class ApiLineageEntity extends BaseEntity {
 
     @PrimaryColumn({
-        type: 'uuid',
+        type: 'varchar',
         comment: 'Unique identifier for the API lineage record.'
     })
     api_lineage_id!: string; // e.g., `${serverName}_${apiCall}`
 
     @Column({
         type: 'uuid',
+        nullable: true,
         comment: 'Reference to associated app management record.'
     })
-    app_mgmt_application_id!: string;
+    app_mgmt_application_id?: string;
 
     @Column({
         comment: 'Name of the server handling the API call.'
