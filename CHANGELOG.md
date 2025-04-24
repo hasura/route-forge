@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/hasura/route-forge/compare/v1.5.1...v1.5.2) (2025-04-24)
+
+
+### Bug Fixes
+
+* Added 2 new fields to API Lineage entity to make it consistent with DBML ([f62bc55](https://github.com/hasura/route-forge/commit/f62bc554ae1c13da23467fe20b98209df1bf44a2))
+
 ## [1.5.1](https://github.com/hasura/route-forge/compare/v1.5.0...v1.5.1) (2025-04-23)
 
 
