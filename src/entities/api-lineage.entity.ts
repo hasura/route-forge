@@ -23,6 +23,20 @@ export class ApiLineageEntity extends BaseEntity {
     app_mgmt_application_id?: string;
 
     @Column({
+        type: 'uuid',
+        nullable: true,
+        comment: 'Reference to associated app management record. Convenience for processing.'
+    })
+    host_app_mgmt_application_id?: string;
+
+    @Column({
+        type: 'uuid',
+        nullable: true,
+        comment: 'Optional reference to server.'
+    })
+    security_host_id?: string;
+
+    @Column({
         comment: 'Name of the server handling the API call.'
     })
     server_name!: string;
