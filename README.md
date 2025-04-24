@@ -26,6 +26,12 @@ that prefer REST APIs.
 
 ![Conceptual Structure of the Transformation Engine](./docs/Route%20Forge.jpg)
 
+## NPM Installation
+
+```bash
+npm install hasura-route-forge
+```
+
 ## Configuration
 
 Configure the plugin in `example/rest.config.ts` or your choice:
